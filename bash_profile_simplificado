@@ -1,0 +1,24 @@
+# ~/.bash_profile simplificado para fase inicial de instalación.
+
+# Establecer el PATH
+export PATH="$HOME/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+# Definir explícitamente la clave pública SSH
+export SSH_PUBLIC_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF31jqDPLtuUh8TkxG8P04sjriQhNh8QGP7jNLy6zjZI jose@linux"
+
+# Si el archivo ~/.ssh/authorized_keys no existe, crearlo y agregar la clave pública
+if [ ! -f "$HOME/.ssh/authorized_keys" ]; then
+    mkdir -p "$HOME/.ssh"
+    echo "$SSH_PUBLIC_KEY" >> "$HOME/.ssh/authorized_keys"
+    chmod 600 "$HOME/.ssh/authorized_keys"
+fi
+
+# Ejecutar script de configuración de red si existe
+if [ -f "$HOME/setup_network.sh" ];then
+    bash "$HOME/setup_network.sh"
+fi
+
+# Ejecutar script de configuración de claves SSH si existe
+if [ -f "$HOME/setup_ssh_keys.sh" ];then
+    bash "$HOME/setup_ssh_keys.sh"
+fi
